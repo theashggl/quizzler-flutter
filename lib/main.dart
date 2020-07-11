@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Questions.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,18 +26,72 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> correct = [];
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.',
+//  List<String> questions = [
+//    'You can lead a cow down stairs but not up stairs.',
+//    'Approximately one quarter of human bones are in the feet.',
+//    'A slug\'s blood is green.',
+//  ];
+//  List<bool> answers=[
+//    false,
+//    true,
+//    true,
+//    true,
+//  ];
+  bool answerboolean;
+  List<Questions> questionbank = [
+    Questions(q: 'You can lead a cow down stairs but not up stairs.', a: false),
+    Questions(
+        q: 'Approximately one quarter of human bones are in the feet.',
+        a: true),
+    Questions(q: 'A slug\'s blood is green.', a: true),
+    Questions(q:'Some cats are actually allergic to humans',a: true),
+    Questions(q: 'You can lead a cow down stairs but not up stairs.',a: false),
+    Questions(q: 'Approximately one quarter of human bones are in the feet.',a: true),
+    Questions(q: 'A slug\'s blood is green.',a: true),
+    Questions(q: 'Buzz Aldrin\'s mother\'s maiden name was \"Moon\".',a: true),
+    Questions(q: 'It is illegal to pee in the Ocean in Portugal.',a: true),
+    Questions(q:
+        'No piece of square dry paper can be folded in half more than 7 times.',a:
+        false),
+    Questions(q:
+        'In London, UK, if you happen to die in the House of Parliament, you are technically entitled to a state funeral, because the building is considered too sacred a place.',a:
+        true),
+    Questions(q:
+        'The loudest sound produced by any animal is 188 decibels. That animal is the African Elephant.',a:
+        false),
+    Questions(q:
+        'The total surface area of two human lungs is approximately 70 square metres.',a:
+        true),
+    Questions(q: 'Google was originally called \"Backrub\".',a: true),
+    Questions(q:
+        'Chocolate affects a dog\'s heart and nervous system; a few ounces are enough to kill a small dog.',a:
+        true),
+    Questions(q:
+        'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',a:
+        true),
   ];
-  List<bool> answers=[
-    false,
-    true,
-    true,
-    true,
-  ];
+  List<Icon> validanswer = [];
+  void checkanswer(bool userpicked, int tracker) {
+    setState(() {
+      if (userpicked == questionbank[tracker].answer) {
+        validanswer.add(
+          Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        );
+      } else {
+        validanswer.add(
+          Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+    });
+    track++;
+  }
+
   int track = 0;
   @override
   Widget build(BuildContext context) {
@@ -50,7 +105,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[track],
+                questionbank[track].question,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -74,20 +129,8 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(
-                  () {
-                    answers[3]=true;
-                    if(answers[3]==answers[track])
-                    {
-                      print('Right');
-                    }
-                    else{
-                      print('Wrong');
-                    }
-                    track++;
-
-                  },
-                );
+                answerboolean = true;
+                checkanswer(answerboolean, track);
               },
             ),
           ),
@@ -106,23 +149,15 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                setState(
-                  () {
-                    answers[3]=false;
-                    if(answers[3]==answers[track])
-                      {
-                        print('Right');
-                      }
-                    else{
-                      print('Wrong');
-                    }
-                    track++;
-                  },
-                );
+                answerboolean = false;
+                checkanswer(answerboolean, track);
               },
             ),
           ),
         ),
+        Row(
+          children: validanswer,
+        )
       ],
     );
   }
